@@ -39,6 +39,7 @@ import obituaryRouter from "./src/routes/obituary/obituaryRoutes.js";
 import serviceRouter from "./src/routes/services/servicesRoutes.js";
 import subServiceRouter from "./src/routes/subServices/subServicesRoutes.js";
 import { errorHandler, notFound } from "./src/utils/errors/errorHandler.js";
+import mailRouter from './src/routes/mail/sendmailRoute.js'
 
 app.get("/", (req, res) => {
   res.status(200).send("API Works!");
@@ -54,7 +55,7 @@ app.use("/api/v1/contacts", contactRouter);
 app.use("/api/v1/services", serviceRouter);
 
 app.use("/api/v1/subservices", subServiceRouter);
-
+app.use("/api/v1/",mailRouter );
 app.use(notFound);
 app.use(errorHandler);
 
