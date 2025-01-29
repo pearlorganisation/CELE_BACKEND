@@ -43,7 +43,7 @@ import reviewsRouter from "./src/routes/reviews/reviewRoutes.js";
 import guestBookRouter from "./src/routes/guestbook/guestbookRoutes.js";
 import photoGalleryRouter from "./src/routes/photoGallery/photoGalleryRoutes.js";
 import mailRouter from "./src/routes/mail/sendmailRoute.js";
-
+import candleRouter from "./src/routes/guestbook/candleRoutes.js"
 app.get("/", (req, res) => {
   res.status(200).send("API Works!");
   console.log("This is Home route");
@@ -61,6 +61,7 @@ app.use("/api/v1/subservices", subServiceRouter);
 app.use("/api/v1/reviews", reviewsRouter);
 app.use("/api/v1/guestbook", guestBookRouter);
 app.use("/api/v1/photo-gallery", photoGalleryRouter);
+app.use("/api/v1/candle",candleRouter)
 app.use("/api/v1/", mailRouter);
 app.use(notFound);
 app.use(errorHandler);

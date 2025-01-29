@@ -33,7 +33,7 @@ export const getAllObituaries = asyncHandler(async (req, res, next) => {
 });
 
 export const getObituary = asyncHandler(async (req, res, next) => {
-  const obituary = await Obituary.findById(req.params.id);
+  const obituary = await Obituary.findById(req.params.id).populate("photoGallery").populate("guestBooks");
   if (!obituary) {
     return next(new ApiErrorResponse("Obituary not found", 404));
   }
