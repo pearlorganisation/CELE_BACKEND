@@ -1,4 +1,4 @@
-import Product from "../models/product.js";
+import { ProductModel } from "../models/Product.js";
 import { uploadFileToCloudinary } from "../utils/cloudinaryConfig.js";
 
 import { asyncHandler } from "../utils/errors/asyncHandler.js";
@@ -19,7 +19,7 @@ export const CreateProduct = asyncHandler(async (req, res, next) => {
 
     const selectedBanners = uploadedImages?.map((uploadedImage) => uploadedImage[0]);
 
-    const product = await Product.create({
+    const product = await ProductModel.create({
       ...req.body,
       images: selectedBanners, // Pass the array of image URLs
     });
@@ -38,7 +38,9 @@ export const CreateProduct = asyncHandler(async (req, res, next) => {
 
 export const getProductData = asyncHandler(async (req, res, next) => {
   try {
-    const products = await Product.find();
+    console.log("asdasdas");
+
+    const products = await ProductModel.find();
 
     // Correct usage of res.status to set the status code
     res.status(200).json({

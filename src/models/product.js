@@ -27,8 +27,7 @@ ProductSchema.pre("save", function (next) {
   next();
 });
 
-const Product = mongoose.models.Product || mongoose.model("Product", ProductSchema);
-export default Product;
+export const ProductModel =  mongoose.model("Product", ProductSchema);
 
 
 

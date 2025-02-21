@@ -1,5 +1,5 @@
 import crypto from "crypto"; 
-import Product from "../models/Product.js";
+import {ProductModel} from "../models/Product.js";
 import Cart from "../models/cart.js";
 
 export const addToCart = async (req, res) => {
@@ -11,7 +11,7 @@ export const addToCart = async (req, res) => {
             cartId = crypto.randomUUID();
         }
 
-        const product = await Product.findById(productId);
+        const product = await ProductModel.findById(productId);
         if (!product) return res.status(404).json({ message: "Product not found" });
 
    
