@@ -13,9 +13,7 @@ export const getAllGuestBooks = asyncHandler(async (req, res, next) => {
     GuestBook, // Model
     page, // Current page
     limit // Limit per page
-    // [], // No population needed
-    // {}, // No filters
-    // "" // No fields to exclude or select
+
   );
 
   // Check if no obituaries are found
@@ -90,3 +88,7 @@ export const createGuestBook = asyncHandler(async (req, res, next) => {
     data: guestBookInfo,
   });
 });
+
+
+
+
