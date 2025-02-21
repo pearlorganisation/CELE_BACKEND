@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const CartSchema = new mongoose.Schema({
-    cartId: { type: String, required: true, unique: true }, // Unique cart ID
+    cartId: { type: String, required: true, unique: true }, 
     items: [
         {
             productId: { type: mongoose.Schema.Types.ObjectId, ref: "Product", required: true },
