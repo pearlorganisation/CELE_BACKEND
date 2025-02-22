@@ -1,5 +1,5 @@
 import crypto from "crypto"; 
-import {ProductModel} from "../models/Product.js";
+import {ProductModel} from "../models/productModal.js";
 import Cart from "../models/cart.js";
 
 export const addToCart = async (req, res) => {
