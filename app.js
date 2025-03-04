@@ -65,7 +65,7 @@ app.use("/api/v1/reviews", reviewsRouter);
 app.use("/api/v1/guestbook", guestBookRouter);
 app.use("/api/v1/photo-gallery", photoGalleryRouter);
 app.use("/api/v1/candle",candleRouter)
-app.use("/api/v1/", mailRouter);
+app.use("/api/v1/mail", mailRouter);
 app.use("/api/v1/eulogy",eulogyRouter)
 app.use("/api/v1/products",CreateProduct)
 app.use("/api/v1/cart",cartRouter)

@@ -26,6 +26,7 @@ export const CreateProduct = asyncHandler(async (req, res, next) => {
 
     res.status(201).json({
       success: true,
+   
       product,
     });
 
@@ -41,7 +42,7 @@ export const getProductData = asyncHandler(async (req, res, next) => {
     const products = await Product.find();
 
     // Correct usage of res.status to set the status code
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       products,
     });
