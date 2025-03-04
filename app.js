@@ -20,8 +20,8 @@ app.use(
   cors({
     origin:
       process.env.NODE_ENV === "development"
-        ? ["http://localhost:5173", "http://localhost:5174"]
-        : ["https://cele.vercel.app"],
+        ? ["http://localhost:5173", "http://localhost:5174","https://cele-frontend-bwjh-psi.vercel.app"]
+        : ["https://cele.vercel.app","https://cele-frontend-bwjh-psi.vercel.app"],
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"], // Specify allowed methods
     credentials: true,
   })
