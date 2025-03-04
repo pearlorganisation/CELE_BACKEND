@@ -24,10 +24,11 @@ export const CreateProduct = asyncHandler(async (req, res, next) => {
       images: selectedBanners, // Pass the array of image URLs
     });
 
-    res.status(201).json({
+    return res.status(201).json({
       success: true,
+      message:"Products created successfully",
    
-      product,
+      data: product,
     });
 
   } catch (error) {
@@ -44,8 +45,11 @@ export const getProductData = asyncHandler(async (req, res, next) => {
     // Correct usage of res.status to set the status code
     return res.status(200).json({
       success: true,
-      products,
+      message:"Products found successfully",
+      data:products,
     });
+
+    
   } catch (error) {
     next(error); // Pass the error to error handling middleware
   }
