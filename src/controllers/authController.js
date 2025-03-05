@@ -11,7 +11,7 @@ dotnev.config();
 
 //SignUp controller
 export const signup = asyncHandler(async (req, res, next) => {
-  const { name, email, password } = req?.body;
+  const { name, email, password, role } = req?.body;
 
   if (!name || !email || !password) {
     return next(new ApiErrorResponse("All fields are required", 400));
@@ -102,9 +102,9 @@ export const logout = asyncHandler(async (req, res, next) => {
       return next(new ApiErrorResponse("User not found", 404)); // Return 404 if no user found
     }
 
-    res
-      .cookie("access-token", "", { ...COOKIE_OPTIONS, maxAge: 0 })
-      .cookie("refresh-token", "", { ...COOKIE_OPTIONS, maxAge: 0 })
+    return res
+      .cookie("access_token", "", { ...COOKIE_OPTIONS, maxAge: 0 })
+      .cookie("refresh_token", "", { ...COOKIE_OPTIONS, maxAge: 0 })
       .status(200)
       .json({ success: true, message: "Logout successfully!" });
   } catch (error) {

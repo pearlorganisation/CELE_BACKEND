@@ -1,11 +1,11 @@
-import User from "../../models/user/user.js";
-import { asyncHandler } from "../../utils/errors/asyncHandler.js";
-import ApiErrorResponse from "../../utils/errors/ApiErrorResponse.js";
 import jwt from "jsonwebtoken";
-import { COOKIE_OPTIONS } from "../../../constants.js";
-import { paginate } from "../../utils/pagination.js";
-import { generateForgotPasswordResetToken } from "../../utils/tokenHelper.js";
-import { sendForgotPasswordMail } from "../../utils/Mail/emailTemplates.js";
+
+import User from "../models/user.js";
+import { asyncHandler } from "../utils/errors/asyncHandler.js";
+import ApiErrorResponse from "../utils/errors/ApiErrorResponse.js";
+import { COOKIE_OPTIONS } from "../../constants.js";
+import { generateForgotPasswordResetToken } from "../utils/tokenHelper.js";
+import { sendForgotPasswordMail } from "../utils/mail/emailTemplates.js";
 
 //Controller for refreshing Access token
 export const refreshAccessToken = asyncHandler(async (req, res, next) => {
@@ -45,6 +45,26 @@ export const refreshAccessToken = asyncHandler(async (req, res, next) => {
       expires: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000), // 15day
     })
     .json({ access_token, refresh_token });
+});
+
+export const getUserProfile = asyncHandler(async (req, res) => {
+  const user = req.user;
+
+  try {
+    res.status(200).json({
+      message: "User profile fetched successfully!",
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        // Add more profile fields if necessary
+      },
+    });
+  } catch (error) {
+    console.error("Error verifying token:", error.message);
+    res.status(401).json({ message: "Invalid or expired token!" });
+  }
 });
 
 // Change password controller

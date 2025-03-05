@@ -1,38 +1,76 @@
-import User from "../models/user.js";
-import ApiErrorResponse from "../utils/errors/ApiErrorResponse.js";
-import { asyncHandler } from "../utils/errors/asyncHandler.js";
 import jwt from "jsonwebtoken";
+import mongoose from "mongoose";
+import User from "../models/user.js";
+import { asyncHandler } from "../utils/errors/asyncHandler.js";
 
+// Middleware to authenticate token
 export const authenticateToken = asyncHandler(async (req, res, next) => {
   const token =
-    req.cookies?.access_token ||
-    req.header("Authorization")?.replace("Bearer ", "");
+    req.cookies?.access_token || req.headers.authorization?.split(" ")[1];
 
   if (!token) {
-    return next(new ApiErrorResponse("Unauthorized user", 401));
+    return res.status(401).json({ message: "Unauthorized. Token is missing." });
   }
-  const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-  if (!decoded) {
-    return next(new ApiErrorResponse("Invalid access token!", 401));
+
+  try {
+    const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+
+    if (!mongoose.Types.ObjectId.isValid(decoded._id)) {
+      return res.status(400).json({ message: "Invalid user ID in token." });
+    }
+
+    const user = await User.findById(decoded._id).select(
+      "-password -refreshToken"
+    );
+    if (!user) {
+      return res
+        .status(401)
+        .json({ message: "User associated with the token not found!" });
+    }
+
+    req.user = user;
+
+    console.log(req.user, "my user");
+    next();
+  } catch (err) {
+    console.error("Token Verification Error:", err.message);
+
+    if (err.name === "TokenExpiredError") {
+      return res
+        .status(401)
+        .json({ message: "Token has expired. Please log in again." });
+    }
+
+    return res.status(401).json({ message: "Invalid or expired token!" });
   }
-  const user = await User.findById(decoded._id).select(
-    "-password -refreshToken"
-  );
-  if (!user) {
-    return next(new ApiErrorResponse("Invalid access token!", 401));
-  }
-  req.user = user;
-  next();
 });
 
+// Middleware to verify user permissions based on roles
 export const verifyPermission = (roles = []) =>
   asyncHandler(async (req, res, next) => {
-    if (!req.user?._id) {
-      return next(new ApiErrorResponse("Unauthorized request", 401));
+    if (!req.user) {
+      return res
+        .status(401)
+        .json({ message: "Unauthorized. User is missing!" });
     }
-    if (roles.includes(req.user?.role)) {
-      next();
-    } else {
-      return next(new ApiErrorResponse("Access denied", 403));
+
+    if (roles.length && !roles.includes(req.user.role)) {
+      return res
+        .status(403)
+        .json({ message: "Access denied. Insufficient permissions!" });
     }
+
+    next();
   });
+
+export const checkAdmin = asyncHandler(async (req, res, next) => {
+  if (!req.user) {
+    return res.status(401).json({ message: "Unauthorized. User is missing!" });
+  }
+
+  if (req.user.role !== "ADMIN") {
+    return res.status(403).json({ message: "Access denied. Admins only!" });
+  }
+
+  next();
+});
