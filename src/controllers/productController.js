@@ -42,8 +42,9 @@ export const getProductData = asyncHandler(async (req, res, next) => {
   try {
     console.log("asdasdas");
 
-    const products = await ProductModel.find();
-
+    const products = await ProductModel.find().lean();
+   
+    console.log(products,"products"); 
     // Correct usage of res.status to set the status code
     return res.status(200).json({
       success: true,

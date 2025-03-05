@@ -52,6 +52,8 @@ app.get("/", (req, res) => {
   console.log("This is Home route");
 });
 
+
+app.use(morgan('dev'));
 // Routes declaration
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/obituaries", obituaryRouter);
